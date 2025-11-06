@@ -108,6 +108,40 @@ export class AsaasService {
     return payments;
   }
 
+  async getOverduePayments(): Promise<AsaasPayment[]> {
+    const payments: AsaasPayment[] = [];
+    let offset = 0;
+    const limit = 100;
+    let hasMore = true;
+
+    while (hasMore) {
+      try {
+        const response = await this.client.get<AsaasListResponse<AsaasPayment>>('/payments', {
+          params: { 
+            limit, 
+            offset,
+            status: 'OVERDUE',
+          },
+        });
+
+        payments.push(...response.data.data);
+
+        hasMore = response.data.hasMore;
+        offset += limit;
+
+        // Small delay to avoid rate limiting
+        if (hasMore) {
+          await new Promise(resolve => setTimeout(resolve, 3000));
+        }
+      } catch (error) {
+        console.error('Error fetching overdue payments from Asaas:', error);
+        throw error;
+      }
+    }
+
+    return payments;
+  }
+
   async enrichPaymentsWithCustomers(
     payments: AsaasPayment[], 
     customers: Cliente[]

@@ -36,10 +36,16 @@ export class ExecutionService {
       const customers = await asaasService.getAllCustomers();
 
       console.log('Fetching pending payments from Asaas...');
-      const payments = await asaasService.getPendingPayments();
+      const pendingPayments = await asaasService.getPendingPayments();
+
+      console.log('Fetching overdue payments from Asaas...');
+      const overduePayments = await asaasService.getOverduePayments();
+
+      // Combine pending and overdue payments
+      const allPayments = [...pendingPayments, ...overduePayments];
 
       console.log('Enriching payments with customer data...');
-      const cobrancas = await asaasService.enrichPaymentsWithCustomers(payments, customers);
+      const cobrancas = await asaasService.enrichPaymentsWithCustomers(allPayments, customers);
 
       // Save cobrancas to storage
       await storage.saveCobrancas(cobrancas);

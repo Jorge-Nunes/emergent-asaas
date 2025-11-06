@@ -4,7 +4,7 @@ import type { Cobranca, ExecutionLog, Config } from '@shared/schema';
 import { EvolutionService } from './evolution.service';
 
 interface ProcessedCobranca extends Cobranca {
-  tipo: 'vence_hoje' | 'aviso' | 'processada';
+  tipo: 'vence_hoje' | 'aviso' | 'vencida' | 'processada';
 }
 
 export class ProcessorService {
@@ -22,9 +22,12 @@ export class ProcessorService {
       const diffTime = dueDate.getTime() - hoje.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-      let tipo: 'vence_hoje' | 'aviso' | 'processada';
+      let tipo: 'vence_hoje' | 'aviso' | 'vencida' | 'processada';
 
-      if (diffDays === 0) {
+      // Check if overdue first
+      if (cobranca.status === 'OVERDUE') {
+        tipo = 'vencida';
+      } else if (diffDays === 0) {
         tipo = 'vence_hoje';
       } else if (diffDays === diasAviso) {
         tipo = 'aviso';
@@ -74,17 +77,21 @@ export class ProcessorService {
 
     // Filter only cobrancas that need messages
     const toProcess = cobrancas.filter(
-      c => c.tipo === 'vence_hoje' || c.tipo === 'aviso'
+      c => c.tipo === 'vence_hoje' || c.tipo === 'aviso' || c.tipo === 'vencida'
     );
 
     for (let i = 0; i < toProcess.length; i += batchSize) {
       const batch = toProcess.slice(i, i + batchSize);
       
       const batchPromises = batch.map(async (cobranca) => {
-        const template = 
-          cobranca.tipo === 'vence_hoje'
-            ? config.messageTemplates.venceHoje
-            : config.messageTemplates.aviso;
+        let template: string;
+        if (cobranca.tipo === 'vence_hoje') {
+          template = config.messageTemplates.venceHoje;
+        } else if (cobranca.tipo === 'vencida') {
+          template = config.messageTemplates.vencida;
+        } else {
+          template = config.messageTemplates.aviso;
+        }
 
         const message = this.generateMessage(
           cobranca,
@@ -96,7 +103,7 @@ export class ProcessorService {
           cobrancaId: cobranca.id,
           customerName: cobranca.customerName,
           customerPhone: cobranca.customerPhone,
-          tipo: cobranca.tipo as 'vence_hoje' | 'aviso',
+          tipo: cobranca.tipo as 'vence_hoje' | 'aviso' | 'vencida',
           status: 'success',
           timestamp: new Date().toISOString(),
         };

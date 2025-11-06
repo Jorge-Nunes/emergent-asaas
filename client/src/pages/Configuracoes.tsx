@@ -28,6 +28,7 @@ export default function Configuracoes() {
     messageTemplates: {
       venceHoje: '',
       aviso: '',
+      vencida: '',
     },
   });
 
@@ -248,6 +249,27 @@ export default function Configuracoes() {
               />
               <p className="text-xs text-muted-foreground">
                 Variáveis disponíveis: {'{'}{'{'} link_fatura {'}'}{'}'}, {'{'}{'{'} valor {'}'}{'}'}, {'{'}{'{'} vencimento {'}'}{'}'}, {'{'}{'{'} dias_aviso {'}'}{'}'}, {'{'}{'{'} cliente_nome {'}'}{'}'}
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Template - Vencida</CardTitle>
+              <CardDescription>Mensagem enviada para cobranças vencidas (OVERDUE)</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Textarea
+                rows={8}
+                value={formData.messageTemplates.vencida}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  messageTemplates: { ...formData.messageTemplates, vencida: e.target.value }
+                })}
+                data-testid="textarea-template-vencida"
+              />
+              <p className="text-xs text-muted-foreground">
+                Variáveis disponíveis: {'{'}{'{'} link_fatura {'}'}{'}'}, {'{'}{'{'} valor {'}'}{'}'}, {'{'}{'{'} vencimento {'}'}{'}'}, {'{'}{'{'} cliente_nome {'}'}{'}'}
               </p>
             </CardContent>
           </Card>

@@ -27,6 +27,7 @@ export type Config = {
   messageTemplates: {
     venceHoje: string;
     aviso: string;
+    vencida: string;
   };
 };
 
@@ -48,7 +49,7 @@ export type Cobranca = {
   status: 'PENDING' | 'RECEIVED' | 'CONFIRMED' | 'OVERDUE';
   invoiceUrl: string;
   description: string;
-  tipo?: 'vence_hoje' | 'aviso' | 'processada';
+  tipo?: 'vence_hoje' | 'aviso' | 'vencida' | 'processada';
 };
 
 export type Execution = {
@@ -66,7 +67,7 @@ export type ExecutionLog = {
   cobrancaId: string;
   customerName: string;
   customerPhone: string;
-  tipo: 'vence_hoje' | 'aviso';
+  tipo: 'vence_hoje' | 'aviso' | 'vencida';
   status: 'success' | 'error';
   mensagem?: string;
   erro?: string;

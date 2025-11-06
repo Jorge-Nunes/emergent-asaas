@@ -59,6 +59,17 @@ Evite a suspensão do serviço e mantenha sua proteção ativa! 🛡️
 🗓️ Vencimento: {{vencimento}}
 
 Estamos aqui para ajudar no que precisar! 📞`,
+        vencida: `⚠️ Atenção! Somos da *TEKSAT Rastreamento Veicular*.
+Sua fatura está *vencida* desde {{vencimento}} 🚨.
+
+Pedimos que regularize o pagamento para evitar interrupção no rastreamento 🚗📡.
+Se já tiver efetuado o pagamento, por favor desconsidere esta mensagem.
+
+🔗 Link da fatura: {{link_fatura}}
+💰 Valor: {{valor}}
+📆 Vencimento: {{vencimento}}
+
+Conte conosco para qualquer dúvida! 🤝`,
       },
     };
     this.cobrancas = new Map();
