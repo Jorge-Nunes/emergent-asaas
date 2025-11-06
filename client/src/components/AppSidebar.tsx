@@ -52,7 +52,7 @@ export function AppSidebar() {
             <span className="text-primary-foreground font-bold text-sm">T</span>
           </div>
           <div>
-            <h2 className="font-semibold text-sm">NotiAsaas</h2>
+            <h2 className="font-semibold text-sm">Notif Asaas</h2>
             <p className="text-xs text-muted-foreground">Gestão de Cobranças</p>
           </div>
         </div>
