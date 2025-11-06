@@ -1,0 +1,86 @@
+import { LayoutDashboard, FileText, Settings, PlayCircle, MessageSquare } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarHeader,
+  SidebarFooter,
+} from "@/components/ui/sidebar";
+
+const menuItems = [
+  {
+    title: "Dashboard",
+    url: "/",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Cobranças",
+    url: "/cobrancas",
+    icon: FileText,
+  },
+  {
+    title: "Relatórios",
+    url: "/relatorios",
+    icon: MessageSquare,
+  },
+  {
+    title: "Execuções",
+    url: "/execucoes",
+    icon: PlayCircle,
+  },
+  {
+    title: "Configurações",
+    url: "/configuracoes",
+    icon: Settings,
+  },
+];
+
+export function AppSidebar() {
+  const [location] = useLocation();
+
+  return (
+    <Sidebar>
+      <SidebarHeader className="p-6 border-b border-sidebar-border">
+        <div className="flex items-center gap-2">
+          <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
+            <span className="text-primary-foreground font-bold text-sm">T</span>
+          </div>
+          <div>
+            <h2 className="font-semibold text-sm">TEKSAT</h2>
+            <p className="text-xs text-muted-foreground">Gestão de Cobranças</p>
+          </div>
+        </div>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {menuItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild isActive={location === item.url} data-testid={`nav-${item.title.toLowerCase()}`}>
+                    <Link href={item.url}>
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter className="p-6 border-t border-sidebar-border">
+        <div className="text-xs text-muted-foreground">
+          v1.0.0
+        </div>
+      </SidebarFooter>
+    </Sidebar>
+  );
+}
