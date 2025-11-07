@@ -69,7 +69,7 @@ export function CobrancaTable({ cobrancas, onSendMessage }: CobrancaTableProps) 
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  {cobranca.tipo && (
+                  {cobranca.tipo && tipoConfig[cobranca.tipo] && (
                     <Badge variant={tipoConfig[cobranca.tipo].variant} className="text-xs">
                       {tipoConfig[cobranca.tipo].label}
                     </Badge>
