@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 import type { Config, Cobranca, Execution, ExecutionLog, DashboardMetrics } from "@shared/schema";
+import { PostgresStorage } from './postgres-storage';
 
 export interface IStorage {
   // Config
@@ -188,4 +189,20 @@ Conte conosco para qualquer dúvida! 🤝`,
   }
 }
 
-export const storage = new MemStorage();
+// Initialize storage based on environment
+let storageInstance: IStorage;
+
+if (process.env.DATABASE_URL) {
+  console.log('[Storage] Using PostgreSQL storage');
+  storageInstance = new PostgresStorage();
+  // Initialize PostgreSQL storage
+  (storageInstance as PostgresStorage).initialize().catch(err => {
+    console.error('[Storage] Failed to initialize PostgreSQL:', err);
+  });
+} else {
+  console.log('[Storage] Using MemStorage (in-memory) - data will be lost on restart');
+  console.log('[Storage] Set DATABASE_URL environment variable to use PostgreSQL');
+  storageInstance = new MemStorage();
+}
+
+export const storage = storageInstance;
