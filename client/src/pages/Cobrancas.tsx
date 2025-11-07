@@ -104,6 +104,7 @@ export default function Cobrancas() {
             <SelectItem value="all">Todos os tipos</SelectItem>
             <SelectItem value="vence_hoje">Vence Hoje</SelectItem>
             <SelectItem value="aviso">Aviso</SelectItem>
+            <SelectItem value="vencida">Vencida</SelectItem>
             <SelectItem value="processada">Processada</SelectItem>
           </SelectContent>
         </Select>
